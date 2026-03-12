@@ -71,6 +71,27 @@ try {
     )
   `);
 
+  // Create base tables if they don't exist
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS habits (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL UNIQUE,
+      description TEXT DEFAULT '',
+      reminder_hours TEXT DEFAULT '',
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+
+    CREATE TABLE IF NOT EXISTS checkins (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      habit_id INTEGER NOT NULL,
+      checked_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      note TEXT DEFAULT '',
+      FOREIGN KEY (habit_id) REFERENCES habits(id) ON DELETE CASCADE
+    );
+
+    CREATE INDEX IF NOT EXISTS idx_checkins_habit ON checkins(habit_id);
+  `);
+
   const migrations = [
     { name: 'category', sql: `ALTER TABLE habits ADD COLUMN category TEXT DEFAULT 'other'` },
     { name: 'allow_duplicate', sql: `ALTER TABLE habits ADD COLUMN allow_duplicate INTEGER DEFAULT 0` },

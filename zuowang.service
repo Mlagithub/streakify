@@ -1,0 +1,13 @@
+[Unit]
+Description=Zuowang - 习惯追踪 Web 应用
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/one/projects/streakify
+ExecStart=/usr/bin/node src/server.js
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=default.target
