@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>坐忘</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📋</text></svg>">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#6366f1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="坐忘">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <a href="#main-content" class="skip-link">跳转到主要内容</a>
+
+  <div class="container">
+    <!-- Header -->
+    <header class="header" role="banner">
+      <h1>🎋 坐忘</h1>
+      <div class="header-actions" role="toolbar" aria-label="页面操作">
+        <button class="icon-btn" data-action="export-json" aria-label="导出JSON数据" title="导出JSON">📤</button>
+        <button class="theme-toggle" data-action="toggle-theme" aria-label="切换深色/浅色主题" title="切换主题">🌙</button>
+      </div>
+    </header>
+
+    <!-- Tabs -->
+    <nav class="tabs" id="mainTabs" role="tablist" aria-label="主导航">
+      <button class="tab active" role="tab" aria-selected="true" aria-controls="tab-stream" data-tab="stream" data-action="switch-tab" data-params='{"tab":"stream"}'>💭 记录</button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="tab-habits" data-tab="habits" data-action="switch-tab" data-params='{"tab":"habits"}'>✨ 习惯</button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="tab-stats" data-tab="stats" data-action="switch-tab" data-params='{"tab":"stats"}'>📊 统计</button>
+    </nav>
+
+    <!-- Tab: Stream (首页 - 记录流) -->
+    <main id="main-content">
+    <section id="tab-stream" role="tabpanel" aria-labelledby="tab-stream-label">
+      <span id="tab-stream-label" class="sr-only">记录页面</span>
+      <!-- 顶部输入区 - TipTap 所见即所得编辑器 -->
+      <div class="stream-input-section">
+        <!-- TipTap 编辑器包装器 -->
+        <div class="editor-wrapper">
+          <!-- 工具栏 -->
+          <div class="editor-toolbar" id="editorToolbar" role="toolbar" aria-label="文本格式工具">
+            <button type="button" class="tool-btn" data-action="bold" aria-label="加粗" aria-keyshortcuts="Ctrl+B" title="加粗 (Ctrl+B)"><b>B</b></button>
+            <button type="button" class="tool-btn" data-action="italic" aria-label="斜体" aria-keyshortcuts="Ctrl+I" title="斜体 (Ctrl+I)"><i>I</i></button>
+            <span class="tool-divider" role="separator" aria-hidden="true"></span>
+            <button type="button" class="tool-btn" data-action="heading" data-level="1" aria-label="标题1" title="标题1">H1</button>
+            <button type="button" class="tool-btn" data-action="heading" data-level="2" aria-label="标题2" title="标题2">H2</button>
+            <span class="tool-divider" role="separator" aria-hidden="true"></span>
+            <button type="button" class="tool-btn" data-action="bulletList" aria-label="无序列表" title="无序列表">•</button>
+            <button type="button" class="tool-btn" data-action="orderedList" aria-label="有序列表" title="有序列表">1.</button>
+            <button type="button" class="tool-btn" data-action="blockquote" aria-label="引用" title="引用">"</button>
+          </div>
+
+          <!-- TipTap 编辑器容器 -->
+          <div id="tiptapEditor" role="textbox" aria-multiline="true" aria-label="内容编辑器" aria-placeholder="写下此刻想法，支持所见即所得格式..." data-placeholder="💭 写下此刻想法，支持所见即所得格式..."></div>
+        </div>
+
+        <!-- 底部操作栏 -->
+        <div class="simple-actions">
+          <div class="emoji-quick-bar" id="emojiQuickBar" role="toolbar" aria-label="快捷表情">
+            <button type="button" data-action="insert-emoji" data-params='{"emoji":"💭"}' aria-label="插入思考表情">💭</button>
+            <button type="button" data-action="insert-emoji" data-params='{"emoji":"✨"}' aria-label="插入闪亮表情">✨</button>
+            <button type="button" data-action="insert-emoji" data-params='{"emoji":"🎯"}' aria-label="插入目标表情">🎯</button>
+            <button type="button" data-action="insert-emoji" data-params='{"emoji":"💡"}' aria-label="插入灯泡表情">💡</button>
+            <button type="button" data-action="insert-emoji" data-params='{"emoji":"❤️"}' aria-label="插入爱心表情">❤️</button>
+            <button type="button" data-action="insert-emoji" data-params='{"emoji":"🔥"}' aria-label="插入火焰表情">🔥</button>
+          </div>
+          <div class="action-buttons">
+            <button type="button" class="btn btn-outline btn-sm" data-action="show-habit-picker" aria-label="打开习惯打卡选择器">✅ 打卡</button>
+            <button type="button" class="btn btn-primary btn-sm" data-action="submit-note" aria-label="发送记录">发送</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 今日记录流 -->
+      <div class="stream-list" id="streamList" role="feed" aria-label="今日记录流" aria-live="polite">
+        <!-- 按时间排序的打卡 + 日志 -->
+      </div>
+    </section>
+
+    <!-- Tab: Habits -->
+    <section id="tab-habits" class="hidden" role="tabpanel" aria-labelledby="tab-habits-label">
+      <span id="tab-habits-label" class="sr-only">习惯管理页面</span>
+      <!-- Category Filter -->
+      <div class="category-filter" id="categoryFilter" role="group" aria-label="分类筛选"></div>
+
+      <!-- Habits List -->
+      <div id="habitsList" role="list" aria-label="习惯列表"></div>
+    </section>
+
+    <!-- Tab: Stats (合并日历) -->
+    <section id="tab-stats" class="hidden" role="tabpanel" aria-labelledby="tab-stats-label">
+      <span id="tab-stats-label" class="sr-only">统计页面</span>
+      <div class="stats-tab-content">
+        <!-- 热力图 -->
+        <div class="heatmap-container" role="img" aria-label="近90天打卡热力图">
+          <div class="heatmap-title" id="heatmap-title">📊 近 90 天打卡热力图</div>
+          <div class="heatmap-grid" id="heatmapGrid" role="presentation"></div>
+          <div class="heatmap-legend" aria-hidden="true">
+            <span>少</span>
+            <div class="heatmap-legend-cell heatmap-cell level-0"></div>
+            <div class="heatmap-legend-cell heatmap-cell level-1"></div>
+            <div class="heatmap-legend-cell heatmap-cell level-2"></div>
+            <div class="heatmap-legend-cell heatmap-cell level-3"></div>
+            <div class="heatmap-legend-cell heatmap-cell level-4"></div>
+            <span>多</span>
+          </div>
+        </div>
+
+        <!-- 统计卡片 -->
+        <div id="statsTabContent">
+          <!-- Stats Bar -->
+          <div class="stats-bar" role="region" aria-label="统计数据概览">
+            <div class="stat-pill" role="status">
+              <div class="val" id="totalCount" aria-label="习惯总数">0</div>
+              <div class="lbl">习惯总数</div>
+            </div>
+            <div class="stat-pill" role="status">
+              <div class="val" id="todayCount" aria-label="今日完成数">0</div>
+              <div class="lbl">今日完成</div>
+            </div>
+            <div class="stat-pill" role="status">
+              <div class="val" id="streakMax" aria-label="最长连续天数">0</div>
+              <div class="lbl">最长连续</div>
+            </div>
+          </div>
+
+          <!-- Daily Progress Bar -->
+          <div class="progress-bar-container" id="progressBarContainer" role="region" aria-label="今日进度">
+            <div class="progress-bar-header">
+              <span class="progress-bar-title">📊 今日进度</span>
+              <span class="progress-bar-stats" id="progressStats" aria-live="polite">0/0</span>
+            </div>
+            <div class="progress-bar-track" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="今日完成进度">
+              <div class="progress-bar-fill" id="progressBarFill" style="width: 0%"></div>
+            </div>
+            <div class="progress-percentage" id="progressPercentage" aria-hidden="true">0%</div>
+          </div>
+        </div>
+
+        <!-- Calendar View -->
+        <div class="calendar-card" role="region" aria-label="日历视图">
+          <div class="calendar-header">
+            <span class="calendar-title" id="calendarTitle" aria-live="polite">2026年3月</span>
+            <div class="calendar-nav" role="group" aria-label="月份导航">
+              <button class="btn btn-sm btn-secondary" data-action="change-month" data-params='{"delta":-1}' aria-label="上一个月">◀</button>
+              <button class="btn btn-sm btn-secondary" data-action="change-month" data-params='{"delta":1}' aria-label="下一个月">▶</button>
+            </div>
+          </div>
+          <div class="calendar-grid" id="calendarGrid" role="grid" aria-label="月历"></div>
+        </div>
+
+        <!-- History List -->
+        <div class="calendar-card" role="region" aria-label="历史记录">
+          <!-- Filter Bar -->
+          <div class="filter-bar-row" role="group" aria-label="筛选条件">
+            <label for="historyTypeFilter" class="sr-only">记录类型</label>
+            <select class="filter-select" id="historyTypeFilter" onchange="renderHistory()" aria-label="选择记录类型">
+              <option value="">全部记录</option>
+              <option value="checkin">打卡</option>
+              <option value="log">日记</option>
+            </select>
+            <label for="historyHabitFilter" class="sr-only">习惯筛选</label>
+            <select class="filter-select" id="historyHabitFilter" onchange="renderHistory()" aria-label="选择习惯">
+              <option value="">全部习惯</option>
+            </select>
+            <label for="historyDaysFilter" class="sr-only">时间范围</label>
+            <select class="filter-select" id="historyDaysFilter" onchange="onDaysFilterChange()" aria-label="选择时间范围">
+              <option value="7">7天</option>
+              <option value="14">14天</option>
+              <option value="30" selected>30天</option>
+              <option value="60">60天</option>
+              <option value="90">90天</option>
+              <option value="custom">自定义</option>
+            </select>
+          </div>
+
+          <!-- Date Picker Bar -->
+          <div class="filter-bar-row date-picker-bar hidden" id="datePickerBar" role="group" aria-label="自定义日期范围">
+            <label for="startDate" class="sr-only">开始日期</label>
+            <input type="date" class="filter-select" id="startDate" title="开始日期" aria-label="开始日期">
+            <span style="color: var(--text-light);" aria-hidden="true">至</span>
+            <label for="endDate" class="sr-only">结束日期</label>
+            <input type="date" class="filter-select" id="endDate" title="结束日期" aria-label="结束日期">
+            <button class="btn btn-primary btn-sm" data-action="render-history" aria-label="查询记录">查询</button>
+          </div>
+
+          <!-- Export Row -->
+          <div class="filter-bar-row" role="group" aria-label="导出操作">
+            <button class="btn btn-sm btn-secondary" data-action="export-json" aria-label="导出为JSON格式">📄 JSON</button>
+            <button class="btn btn-sm btn-secondary" data-action="export-csv" aria-label="导出为CSV格式">📊 CSV</button>
+          </div>
+
+          <!-- History List -->
+          <div id="historyList" role="list" aria-label="历史记录列表" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+    </main>
+
+  </div>
+
+  <!-- Modal -->
+  <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <span class="modal-title" id="modalTitle"></span>
+        <button class="modal-close" onclick="closeModal(null, true)" aria-label="关闭对话框">&times;</button>
+      </div>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer" role="status" aria-live="polite" aria-label="通知消息"></div>
+  
+  <!-- Scripts (order matters!) -->
+  <script src="/dist/tiptap-bundle.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/state.js"></script>
+  <script src="js/cache.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/components.js"></script>
+  <script src="js/performance.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
